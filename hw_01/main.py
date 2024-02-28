@@ -16,6 +16,15 @@ if x:
         print("False")
 else:
     print("False")'''
+#Вітаю.
+#Рішення 2 завдання можна записати лаконічніше:
+'''user_input = input("Enter an integer: ")
+
+if user_input.isdigit():
+  number = int(user_input)
+  print(number % 2 == 0 and 100 <= number <= 999)
+else:
+  print("\nInvalid input format. Please enter a positive integer.")'''
 
 # 3. Як вхідні дані візьмемо ціле число;
 # Це число від 101 до 999, а його остання цифра не дорівнює нулю.
