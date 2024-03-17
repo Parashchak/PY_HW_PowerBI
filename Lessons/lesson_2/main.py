@@ -45,10 +45,7 @@ print('Mark: {mark}\nYear: {year}\mType of engine: {type}'.format(mark = mark_au
 print(f'Mark: {mark_auto} \nYear: {year_auto} \nType of engine: {type_of_engine}')
 '''
 
-name = 'Sasha'
-age = 18
-surname = 'Surname'
-
+'''
 my_first_list = []
 print(my_first_list, type(my_first_list))
 
@@ -108,4 +105,24 @@ match val: # val
     case 'Porsche': print('It is not Jaguar 😟')
     case 'Tesla':   print('Buy Jaguar')
     case _ : print('error') # else block
+'''
 
+'''
+# 1. Take an integer number as input and print if it’s “Even” or “Odd”.
+# input, print, cast, if
+num = int(input('Please enter num: '))
+#result = print('odd') if num % 2 else print('Even')
+
+match num % 2:
+    case 0:
+        print('odd')
+    case _ : print('Even')
+'''
+
+# 2. Take as inputs sides of rectangular and print “Big” if the area is larger than 100, otherwise “small”.
+hei = int(input('enter hei: '))
+wei = int(input('enter wei: '))
+if (hei * wei) > 100:
+    print('Big')
+else:
+    print('Small')
