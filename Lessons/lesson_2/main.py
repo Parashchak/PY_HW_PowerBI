@@ -119,6 +119,7 @@ match num % 2:
     case _ : print('Even')
 '''
 
+'''
 # 2. Take as inputs sides of rectangular and print “Big” if the area is larger than 100, otherwise “small”.
 hei = int(input('enter hei: '))
 wei = int(input('enter wei: '))
@@ -126,3 +127,61 @@ if (hei * wei) > 100:
     print('Big')
 else:
     print('Small')
+
+# Second var
+result = 'Big' if (hei * wei) > 100 else 'Small'
+print(result)
+
+result = 'Big' if (hei * wei) < 500 else 'Very Big' if (hei * wei) > 100 else 'Small'
+'''
+
+'''
+a = 5
+b = 5
+operator = '//'
+eval(f'{a} {operator} {b}')
+'''
+
+'''
+# 3. Введіть назву фігури та відповідні параметри для того, щоб дізнатись її площу. 
+# Виведіть напис «Великий», якщо площа більше 100, «Маленький», якщо менше. І якщо відповідь від'ємна – «Помилка»
+# Ромб, трик, квадрату, коло, прямокутник
+# 3 - зробити перевірки чи  існує  фігура, match/case
+list_of_figure = ['Ромб','Треугольник']
+name_of_figure = input('Выберите фигуру: Ромб или Треугольник: ').capitalize()
+
+while not (name_of_figure in list_of_figure):
+    print('Пожалуйста выберите только ту фигуру которая присутствует в этом списке')
+    name_of_figure = input('Выберите фигуру: Ромб или Треугольник: ').capitalize()
+
+if name_of_figure in list_of_figure:
+    print(f'Вы выбрали фигуру {name_of_figure}')
+
+if name_of_figure == 'Ромб':
+    d1 = float(input('Пожалуйста введите первую диагональ: '))
+    while d1 == 0:
+        d1 = float(input('Ни одна из диагоналей не может быть равна нулю! Пожалуйста введите первую диагональ еще раз: '))
+
+    d2 = float(input('Пожалуйста введите вторую диагональ: '))
+    while d2 == 0:
+        d2 = float(input('Ни одна из диагоналей не может быть равна нулю! Пожалуйста введите вторую диагональ еще раз: '))
+
+    area_of_a_rhombus = d1 * d2
+    print(f'Площадь вашего Ромба равна: {area_of_a_rhombus} см²')
+
+elif name_of_figure == 'Треугольник':
+    a = float(input('Пожалуйста введите первую сторону треугольника: '))
+    while a == 0:
+        a = float(input('Ни одна из сторон не может быть равна нулю! Пожалуйста введите первую сторону еще раз: '))
+
+    b = float(input('Пожалуйста введите вторую сторону треугольника: '))
+    while b == 0:
+        b = float(input('Ни одна из сторон не может быть равна нулю! Пожалуйста введите вторую сторону еще раз: '))
+
+    c = float(input('Пожалуйста введите третью сторону треугольника: '))
+    while c == 0:
+        c = float(input('Ни одна из сторон не может быть равна нулю! Пожалуйста введите третью сторону еще раз: '))
+
+    area_of_a_triangle = (a + b + c) / 2
+    print(f'Площадь вашего Треугольника равна: {area_of_a_triangle} см²')
+'''
