@@ -42,7 +42,16 @@ print(local_time.tm_year, local_time.tm_mday, local_time.tm_mon) # отрима�
 
 # Task 1. Write function to find current date - return date in format day of week month name year(yyyy)
 # Task 2. Write cycle iterate 100 elements after last element sleep for 10 seconds, and display test 'All done'
-
+for i in range(0,101):
+    arr = []
+    if i <= 100:
+        arr.append(i)
+    else:
+        time.sleep(10)
+        arr.append(i)
+        print('All done')
+print (arr)
+#Task1
 def current_date(date: time.time) -> time.time:
     
     if not isinstance(date, float):
@@ -131,15 +140,47 @@ print(result)
 
 # завдання 
 # 1. Використайте map() для перетворення списку зі рядок на список чисел: ['1', '2', '3', '4', '5'] → [1, 2, 3, 4, 5].
+num_0 = [str(i) for i in range(0,10)]
+convert_list = map(lambda x: int(x), num_0)
+print(list(convert_list))
 # 2. Використайте filter() для знаходження всіх парних чисел у списку: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] → [2, 4, 6, 8, 10].
+num_1 = [i for i in range(1,11)]
+ev = list(filter(lambda x: x % 2 == 0, num_1))
+print(num_1, ev)
 # 3. Використайте reduce() для обчислення добутку всіх елементів у списку: [1, 2, 3, 4, 5] → 120 (1 * 2 * 3 * 4 * 5).
+num_2 = [i for i in range(1,11)]
+result = reduce(lambda x,y: x * y, num_2)
+print(result)
 # 4. Використайте map() для перетворення списку зі рядок на список квадратів цих чисел: [1, 2, 3, 4, 5] → [1, 4, 9, 16, 25].
+num_3 = [i for i in range(1,11)]
+res = list(map(lambda x: x ** 2, num_3))
+print(res)
 # 5. Використайте filter() для знаходження всіх позитивне чисел у списку: [1, -2, 3, -4, 5, -6, 7, -8, 9, -10] → [1, 3, 5, 7, 9].
+arr_0 = [1, -2, 3, -4, 5, -6, 7, -8, 9, -10]
+resu = list(filter(lambda x: x >= 0, arr_0))
+print(resu)
 # 6. Використайте reduce() для обчислення суми всіх елементів у списку: [1, 2, 3, 4, 5] → 15 (1 + 2 + 3 + 4 + 5).
+arr_1 = [1, 2, 3, 4, 5]
+r = reduce(lambda x,y: x + y, arr_1)
+print(r)
 # 7. Використайте map() для перетворення списку зі рядок на список їхніх довжин: ['apple', 'banana', 'cherry'] → [5, 6, 6].
+arr_2 = ['apple', 'banana', 'cherry']
+res_ult = list(map(lambda x: (x, len(x)), arr_2))
+print(res_ult)
 # 8. Використайте filter() для знаходження всіх елементів списку, які більше за середнє значення списку: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] → [6, 7, 8, 9, 10].
+arr_3 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+from statistics import mean
+avg = mean(arr_3)
+resu_ = list(filter(lambda x: x >= avg, arr_3))
+print(resu_)
 # 9. Використайте reduce() для обчислення найбільшого елемента у списку: [1, 5, 3, 9, 2] → 9.
+arr_4 = [1, 5, 3, 9, 2]
+re_ = reduce(lambda x,y: max(x,y), arr_4)
+print(re_)
 # 10. Використайте map() для перетворення списку зі рядок на список великих літер: ['apple', 'banana', 'cherry'] → ['APPLE', 'BANANA', 'CHERRY'].
+arr_5 = ['apple', 'banana', 'cherry']
+r_ = list(map(lambda x: x.upper(), arr_5))
+print(r_)
 
 try:
     number = float(input('Input value: '))
