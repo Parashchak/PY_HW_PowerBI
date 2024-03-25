@@ -24,6 +24,10 @@ Student 6 має позначку “Passed” з оцінкою 75, а Student 
 знаходиться в
 діапазоні 73 – 78 балів.
 '''
+
+import random
+
+# Отримання кількості студентів від користувача
 def get_valid_input(prompt):
     while True:
         try:
@@ -32,8 +36,43 @@ def get_valid_input(prompt):
                 raise ValueError("Введіть позитивне ціле число.")
             return value
         except ValueError as e:
-            print(f"Error: {e}")
-            continue  
+            print(f"Помилка: {e}")
+            continue
+
+# Генерування балів та результатів студентів
+def generate_student_scores(num_students):
+    student_scores = []
+    for _ in range(num_students):
+        score = random.randint(60, 100)
+        result = random.choice(["Failed", "Passed"])
+        student_scores.append((score, result))
+    return student_scores
+
+# Виведення результатів студентів
+def print_student_results(student_scores):
+    print("Результати студентів:")
+    for i, (score, result) in enumerate(student_scores, start=1):
+        print(f"Студент {i}: Бал - {score}, Результат - {result}")
+
+# Перевірка послідовності професора
+def check_professor_consistency(student_scores):
+    passing_scores = [score for score, result in student_scores if result == "Passed"]
+    failing_scores = [score for score, result in student_scores if result == "Failed"]
+
+    min_passing_score = min(passing_scores) if passing_scores else 100
+    max_failing_score = max(failing_scores) if failing_scores else 50
+
+    if min_passing_score <= max_failing_score:
+        print("Професор Грубл не був послідовним у проставленні позначок 'Passed'.")
+    else:
+        print(f"Професор Грубл був послідовним.")
+        print(f"Діапазон проходження іспиту: [{max_failing_score + 1}, {min_passing_score - 1}].")
 
 
+num_students = get_valid_input("Введіть кількість студентів: ")
 
+student_scores = generate_student_scores(num_students)
+
+print_student_results(student_scores)
+
+check_professor_consistency(student_scores)
