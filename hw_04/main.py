@@ -87,6 +87,18 @@ def sieve_eratosthenes(n):
     primes.extend(num for num in range(2, n + 1) if sieve[num])
     return primes
 
+# Решето Вікіпедія
+import math
+def wiki_eratosthenes(n):
+    prime = [True] * n
+    prime[0], prime[1] = False, False # 0 та 1 не є простими
+    for i in range(2, math.ceil(math.sqrt(n))):  # від 2 до квадратного кореня з N 
+        if prime[i]:  # якщо просте видаляємо всі числа кратні до нього
+            j = i * i   # для i=2,j будуть такі значення 4,6,8,10,12... для i=3 j — 9,12,15,18,21...
+            while j < n:
+                prime[j] = False
+                j += i
+
 # Функція для визначення часу відпрацювання функцій
 def measure_time(func, *args, **kwargs):
     start = time.time()
@@ -105,4 +117,6 @@ for i in ranges:
     measure_time(simple_prime_search, i)
     print("Метод решета Ератосфена:")
     measure_time(sieve_eratosthenes, i)
+    print("Метод решета Ератосфена_Вікіпедія:")
+    measure_time(wiki_eratosthenes, i)
     print("---------------------------------------")
