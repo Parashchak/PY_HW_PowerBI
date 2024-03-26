@@ -63,6 +63,7 @@ return result: Повертає результат виконання функц
 
 import time
 
+# Проста функція для перевірки чисел
 def simple_prime_search(n):
     primes = []
     for num in range(2, n):
@@ -75,6 +76,7 @@ def simple_prime_search(n):
             primes.append(num)
     return primes
 
+# функція Решето Ератосфена
 def sieve_eratosthenes(n):
     primes = []
     sieve = [True] * (n + 1)
@@ -85,6 +87,7 @@ def sieve_eratosthenes(n):
     primes.extend(num for num in range(2, n + 1) if sieve[num])
     return primes
 
+# Функція для визначення часу відпрацювання функцій
 def measure_time(func, *args, **kwargs):
     start = time.time()
     result = func(*args, **kwargs)
@@ -92,9 +95,10 @@ def measure_time(func, *args, **kwargs):
     print(f"Час виконання функції {func.__name__}: {end_time - start} секунд")
     return result
 
-# Перевірка продуктивності для різних діапазонів
+# Діапазон перевірочних чисел
 ranges = [100, 1000, 10000]
 
+# Текст для виводу відпрацьованих функцій
 for i in ranges:
     print(f"Діапазон пошуку простих чисел до {i}:")
     print("Простий метод пошуку:")
