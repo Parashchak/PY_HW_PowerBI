@@ -20,6 +20,43 @@ Topic of tasks:
   - change_book(): Allows modifying the object's fields.
   - check_year(): Shows whether the publication year is above or below a certain threshold (for example, 25 years).
 - *Try to create an object from a text file. Consider two initialization methods for __init__.
+class Book(object):
+
+    def __init__(self, book_name, year, book_author, publisher) -> None:
+        self.book_name = book_name
+        self.year = year
+        self.book_author = book_author
+        self.publisher = publisher
+    
+    def change_book(self, param_change, new_value):
+        if Book.hasattr(param_change) == True:
+            setattr(self, param_change, new_value)
+        else:
+            return None
+
+    def get_info(self):
+        print(f'Book name is {self.book_name}')
+
+    def __repr__(self) -> str:
+        return f'Book name is {self.book_name}'
+
+    @staticmethod
+    def get_date():
+        return dt.now
+
+    def check_year(self, today = get_date()):
+        if today.year - self.year > Book.threshold:
+            return f'Diff {today.year - self.year}'
+        else:
+            return 'Actual book year'
+    
+    @classmethod
+    def file_upload(cls, file_path):
+        with open(file_path, 'r') as file:
+            text = [i.strip() for i in file.read().split(',')]
+            book_name, year, book_author, publisher = text[0], text[1], text[2], text[3]
+            return cls(book_name, year, book_author, publisher)
+
 
 # Task 2. Create a Weather Class.
 - Retrieves information from the API (https://openweathermap.org/api). The user inputs a city name, and a new object is created based on the API data. The object includes the following fields: city_name, country, temp, date_, history_of_temp (a list to save historical weather data).
@@ -27,6 +64,45 @@ Topic of tasks:
   - convert_temp(): Converts temperature from °C to °F and vice versa.
   - display_weather(): Displays information about the weather.
   - get_weather(): This method uses the API to update the current weather and saves previous weather data in history_of_temp.
+class Weather(object):
+
+    def __init__(self, city_name, country, temp, date_) -> None:
+        self.city_name = city_name
+        self.country = country
+        self.temp = temp
+        self.date_ = date_
+        self.history_of_temp = []
+
+    def __repr__(self) -> str:
+        return f'Last date of update: {self.temp}.\nCity: {self.city_name}, Country: {self.country}'
+
+    def display_weather(self):
+        pass #same as __repr__
+
+    @staticmethod
+    def get_api(api_key: str, url:str, city: str) -> JSON | None:
+        pass
+
+    @staticmethod
+    def get_city():
+        return input('Enter city: ').strip()
+
+    @staticmethod
+    def parse_json(json_data):
+
+        city_name = json_data.get('city_name')
+        country = json_data.get('country')
+        temp = json_data(temp)
+        return [city_name, country, temp]
+
+    @classmethod
+    def from_api(cls, json_data):
+        if len(json_data) == 0:
+            return None
+
+        parse_list = parse_json(json_data) 
+
+        cls(city_name, country, temp, date_)  
 
 # Task 3. Create a Project Class.
 - Creates a new project. The class includes the following fields: project_name, user_list(a list of users in the format [user_name, user_id, user_salary]), budget, estimate.
