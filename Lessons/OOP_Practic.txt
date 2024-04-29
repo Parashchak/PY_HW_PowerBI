@@ -1,0 +1,45 @@
+Help links:
+	- Weather api: https://openweathermap.org/api
+	- Class: https://www.w3schools.com/python/python_classes.asp
+	- Class methods: https://www.geeksforgeeks.org/classmethod-in-python/
+	- Git: https://www.w3schools.com/git/
+
+
+Topic of tasks:
+	- OOP
+	- API
+	- Git
+
+
+# OOP - tasks, all tasks need to push in your git project, with git project name: class_practise
+
+# Task 1. Create a Book Class.
+- Enables creating a book object with the following fields: book_name, year, book_author, publisher.
+- The class has the following methods:
+  - get_info(): Displays all the information about the book.
+  - change_book(): Allows modifying the object's fields.
+  - check_year(): Shows whether the publication year is above or below a certain threshold (for example, 25 years).
+- *Try to create an object from a text file. Consider two initialization methods for __init__.
+
+# Task 2. Create a Weather Class.
+- Retrieves information from the API (https://openweathermap.org/api). The user inputs a city name, and a new object is created based on the API data. The object includes the following fields: city_name, country, temp, date_, history_of_temp (a list to save historical weather data).
+- The class has the following methods:
+  - convert_temp(): Converts temperature from °C to °F and vice versa.
+  - display_weather(): Displays information about the weather.
+  - get_weather(): This method uses the API to update the current weather and saves previous weather data in history_of_temp.
+
+# Task 3. Create a Project Class.
+- Creates a new project. The class includes the following fields: project_name, user_list(a list of users in the format [user_name, user_id, user_salary]), budget, estimate.
+- The class has methods for:
+  - adding/removing a user,
+  - changing the budget,
+  - changing the estimate,
+  - checking the estimate: calculates how much time has been spent on the project; if actual_time > estimate_time, it displays this; if estimate < actual_time, it shows how much time is left.
+
+# Task 4. Create an Inventory Class.
+- Creates a new item with the following fields: item_id, item_name, quantity, cost.
+- The class has methods for:
+  - displaying all information about the item,
+  - displaying the total value of all units of the item,
+  - changing the cost of the item,
+  - changing the quantity of the item.
