@@ -290,36 +290,22 @@ from collections import Counter, defaultdict
 from itertools import chain, combinations
 '''
 
+
 import requests
 import os
-from collections import Counter, defaultdict
+from collections import defaultdict
 from itertools import chain, combinations
 
 def download_document(file_name, document_url):
-
-   if os.path.exists(file_name):
-
-       pass
-
-   else:
-
-       response = requests.get(document_url)
-
-       if response.status_code == 200:
-
-           with open(file_name, 'wb') as f:
-
-               f.write(response.content)
-
-       else:
-
-           print(f'Failed to download the document. Status code: {response.status_code}')
-
-file_name = 'orders.txt'
-
-document_url = 'https://drive.google.com/uc?id=1IOPTVq2ooQfZRkF3rAjGkTjRtbotG7FF'
-
-download_document(file_name, document_url)
+    if os.path.exists(file_name):
+        pass
+    else:
+        response = requests.get(document_url)
+        if response.status_code == 200:
+            with open(file_name, 'wb') as f:
+                f.write(response.content)
+        else:
+            print(f'Failed to download the document. Status code: {response.status_code}')
 
 def read_orders(filename):
     with open(filename, 'r', encoding='utf-8') as file:
@@ -328,7 +314,9 @@ def read_orders(filename):
     return orders
 
 def count_products(orders):
-    product_count = Counter(chain.from_iterable(orders))
+    product_count = defaultdict(int)  # defaultdict для автоматичного створення значення за замовчуванням 0
+    for product in chain.from_iterable(orders):
+        product_count[product] += 1
     return product_count
 
 def calculate_support(orders, product1, product2):
@@ -338,8 +326,6 @@ def calculate_support(orders, product1, product2):
 
 def generate_association_rules(orders, min_confidence, min_support):
     product_count = count_products(orders)
-    association_rules = []
-
     for order in orders:
         for product1, product2 in combinations(order, 2):
             support = calculate_support(orders, product1, product2)
@@ -348,16 +334,17 @@ def generate_association_rules(orders, min_confidence, min_support):
                 confidence2 = support / product_count[product2]
 
                 if confidence1 >= min_confidence:
-                    association_rules.append((product1, product2, support, confidence1))
+                    print(f"{product1} => {product2} ({confidence1:.2f}% confidence), {int(support*len(orders))} support")
                 if confidence2 >= min_confidence:
-                    association_rules.append((product2, product1, support, confidence2))
+                    print(f"{product2} => {product1} ({confidence2:.2f}% confidence), {int(support*len(orders))} support")
 
-    for rule in association_rules:
-        print(f"Association Rule: {rule[0]} -> {rule[1]}, Support: {rule[2]}, Confidence: {rule[3]}")
+file_name = 'orders.txt'
+document_url = 'https://drive.google.com/uc?id=1IOPTVq2ooQfZRkF3rAjGkTjRtbotG7FF'
+
+download_document(file_name, document_url)
 
 orders = read_orders(file_name)
-min_confidence = 0.5
-min_support = 0.2
-generate_association_rules(orders, min_confidence, min_support)
+min_confidence = 0.45
+min_support = 0.15
 
-print(orders)
+generate_association_rules(orders, min_confidence, min_support)
