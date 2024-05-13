@@ -134,3 +134,86 @@ loc[:, ['Year', 'Film']]
 
 	Інший синтаксис: Результати можна також знайти, використовуючи метод loc з умовою isin().
     '''
+
+import pandas as pd
+import os
+import requests
+
+# --- 1
+# Перевірка наявності файлу 'movies.csv'
+file_name = 'movies.csv'
+if not os.path.exists(file_name):
+    # Завантаження файлу з вказаної URL-адреси
+    url = 'https://gist.githubusercontent.com/tiangechen/b68782efa49a16edaf07dc2cdaa855ea/raw/0c794a9717f18b094eabab2cd6a6b9a226903577/movies.csv'
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(file_name, 'wb') as f:
+            f.write(response.content)
+    else:
+        print(f'Failed to download the document. Status code: {response.status_code}')
+
+# Зчитування файлу у DataFrame
+movies_df = pd.read_csv(file_name)
+
+# --- 2
+# Вивід назв стовпців та типів даних
+print("Назви стовпців та їх типи:")
+print(movies_df.dtypes)
+
+# Використання методу info() для загальної інформації
+print("\nІнформація про DataFrame:")
+print(movies_df.info())
+
+# Використання методу describe() для отримання основних статистичних показників
+print("\nОсновні статистичні показники:")
+print(movies_df.describe())
+
+# --- 3
+total_movies = len(movies_df)
+print(f"\nЗагальна кількість фільмів: {total_movies}")
+
+# --- 4
+movies_per_year = movies_df['Year'].value_counts()
+print("\nКількість фільмів за кожен рік:")
+print(movies_per_year)
+
+# --- 5
+# Найбільш прибутковий фільм
+most_profitable_movie = movies_df.loc[movies_df['Profitability'].idxmax()]
+
+# Найменш прибутковий фільм
+least_profitable_movie = movies_df.loc[movies_df['Profitability'].idxmin()]
+
+print("\nІнформація про найбільш прибутковий фільм:")
+print(most_profitable_movie)
+
+print("\nІнформація про найменш прибутковий фільм:")
+print(least_profitable_movie)
+
+# --- 6
+# Перевірка унікальних значень стовпця "Жанр"
+unique_genres = movies_df['Genre'].unique()
+print("\nУнікальні значення стовпця 'Жанр':")
+print(unique_genres)
+
+# Виправлення невідповідностей
+movies_df['Genre'] = movies_df['Genre'].str.strip().str.replace('Comdy', 'Comedy', regex=False).str.replace('Romence', 'Romance', regex=False).str.capitalize()
+
+# Перевірка знову
+unique_genres_corrected = movies_df['Genre'].unique()
+print("\nУнікальні значення стовпця 'Жанр' після виправлення:")
+print(unique_genres_corrected)
+
+# --- 7
+# Відбір комедій
+comedy_movies = movies_df[movies_df['Genre'] == 'Comedy']
+
+# Сортування за кількістю глядачів у порядку спадання
+top_10_comedies = comedy_movies.sort_values(by='Audience score %', ascending=False).head(10)
+
+# Обираємо потрібні стовпці
+top_10_comedies = top_10_comedies[['Film', 'Year', 'Lead Studio']]
+
+# Зберігаємо результат у новому файлі CSV
+folder_adress = '/Users/vasylparashchak/Desktop/Python_BI/PY_HW_PowerBI/hw_06/'
+top_10_comedies.to_csv(folder_adress + 'top_10_comedies.csv', index=False)
