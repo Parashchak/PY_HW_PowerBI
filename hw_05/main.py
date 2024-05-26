@@ -293,8 +293,8 @@ from itertools import chain, combinations
 
 import requests
 import os
-from collections import defaultdict, Counter
-from itertools import combinations, chain
+from collections import Counter, defaultdict
+from itertools import chain, combinations
 
 def download_document(file_name, document_url):
     if os.path.exists(file_name):
@@ -317,70 +317,69 @@ def read_orders(filename):
 def count_products(orders):
     return Counter(chain.from_iterable(orders))
 
-def get_frequent_itemsets(orders, min_support):
-    total_orders = len(orders)
-    itemsets = defaultdict(int)
-    
+def count_product_pairs(orders):
+    pair_count = defaultdict(int)
     for order in orders:
-        for item in set(order):
-            itemsets[frozenset([item])] += 1
-    
-    itemsets = {itemset: count for itemset, count in itemsets.items() if count / total_orders >= min_support}
-    
-    print(f"Initial frequent itemsets: {itemsets}")
+        for pair in combinations(set(order), 2):
+            pair = tuple(sorted(pair))
+            pair_count[pair] += 1
+    return pair_count
 
-    k = 2
-    while True:
-        new_combinations = defaultdict(int)
-        
-        for order in orders:
-            for combination in combinations(set(order), k):
-                comb_set = frozenset(combination)
-                if all(frozenset(subset) in itemsets for subset in combinations(comb_set, k-1)):
-                    new_combinations[comb_set] += 1
-        
-        new_combinations = {itemset: count for itemset, count in new_combinations.items() if count / total_orders >= min_support}
-        
-        if not new_combinations:
-            break
-        
-        itemsets.update(new_combinations)
-        k += 1
-    
-    print(f"Frequent itemsets: {itemsets}")
-    return itemsets
+def generate_association_rules(orders, min_support, min_confidence):
+   
+    product_pairs = {}
 
-def generate_association_rules(orders, min_confidence, min_support):
-    itemsets = get_frequent_itemsets(orders, min_support)
-    total_orders = len(orders)
-    
-    rules = []
-    
-    for itemset in itemsets:
-        if len(itemset) > 1:
-            for antecedent in combinations(itemset, len(itemset) - 1):
-                antecedent = frozenset(antecedent)
-                consequent = itemset - antecedent
-                support = itemsets[itemset] / total_orders
-                confidence = itemsets[itemset] / itemsets[antecedent]
-                
-                if confidence >= min_confidence:
-                    rules.append((antecedent, consequent, confidence, support))
-    
-    if not rules:
-        print("No association rules found.")
-    else:
-        for rule in rules:
-            antecedent, consequent, confidence, support = rule
-            print(f"{set(antecedent)} => {set(consequent)} ({confidence*100:.2f}% confidence), {int(support * total_orders)} support")
+    for order in orders:
+        for pair in combinations(order, 2):
+            pair = tuple(sorted(pair))
+            pair_key = f"{pair[0]} <=> {pair[1]}"
+            if pair_key not in product_pairs:
+                product_pairs[pair_key] = 0
+            product_pairs[pair_key] += 1
+
+    product_support = {}
+    for order in orders:
+        for product in set(order):
+            if product not in product_support:
+                product_support[product] = 0
+            product_support[product] += 1
+
+    association_count = 0
+
+    for pair_key, support in product_pairs.items():
+        if support >= min_support:
+            products = pair_key.split(" <=> ")
+            x, y = products[0], products[1]
+
+            confidence_x_to_y = (support / product_support[x]) * 100
+            confidence_y_to_x = (support / product_support[y]) * 100
+
+            if confidence_x_to_y >= min_confidence:
+                print(f"Rule: {x} => {y}, support: {support}, confidence: {confidence_x_to_y:.2f}%")
+                association_count += 1
+            if confidence_y_to_x >= min_confidence:
+                print(f"Rule: {y} => {x}, support: {support}, confidence: {confidence_y_to_x:.2f}%")
+                association_count += 1
+
+    print(f"Total associations found: {association_count}")
 
 file_name = 'orders.txt'
 document_url = 'https://drive.google.com/uc?id=1IOPTVq2ooQfZRkF3rAjGkTjRtbotG7FF'
 
 download_document(file_name, document_url)
 
+# Зчитування та обробка даних
 orders = read_orders(file_name)
-min_confidence = 0.45
-min_support = 0.15
+min_confidence = 45
+min_support = 15
 
-generate_association_rules(orders, min_confidence, min_support)
+# Підрахунок частот товарів та пар товарів
+products = count_products(orders)
+product_pairs = count_product_pairs(orders)
+total_orders = len(orders)
+
+print(f"Total orders: {total_orders}")
+print(f"Number of unique products: {len(products)}")
+print(f"Found {len(product_pairs)} pairs of products from {total_orders} orders")
+
+generate_association_rules(orders, min_support, min_confidence)
